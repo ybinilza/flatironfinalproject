@@ -4,7 +4,7 @@ import { useFormik } from 'formik';
 import * as yup from "yup";
 
 function SignupPage({ onLogin }) {
-  
+
   const formSchema = yup.object().shape({
     username: yup.string().required("Must enter a username").max(15),
     email: yup.string().email("Invalid email").required("Must enter an email"),
@@ -21,6 +21,9 @@ function SignupPage({ onLogin }) {
     },
     validationSchema: formSchema,
     onSubmit: async (values) => {
+      //console.log(formik)
+      console.log(values)
+
       try {
         const response = await fetch("/signup", {
           method: "POST",
