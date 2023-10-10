@@ -36,7 +36,7 @@ class Signup(Resource):
         email=json.get("email")
         password = json.get("password")
         
-#print(username,email,password)
+        #print(username,email,password)
 
 
         user = User(

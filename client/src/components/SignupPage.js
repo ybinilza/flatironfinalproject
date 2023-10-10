@@ -35,7 +35,8 @@ function SignupPage({ onLogin }) {
 
         if (response.ok) {
           const user = await response.json();
-          onLogin(user);
+          //onLogin(user);
+          console.log(user)
         } else {
           const errorData = await response.json();
           formik.setErrors(errorData.errors || {});

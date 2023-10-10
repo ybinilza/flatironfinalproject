@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from "react";
 import { Switch, Route } from "react-router-dom";
 import SignupPage from "./SignupPage";
+import LoginPage from "./LoginPage";
 
 function App() {
   return(<div>
     <h1>
-      <SignupPage></SignupPage>
+      <LoginPage></LoginPage>
     </h1>
   </div>)
 }
