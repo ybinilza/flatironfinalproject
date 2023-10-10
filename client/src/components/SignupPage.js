@@ -2,26 +2,47 @@ import React from 'react'
 import './SignupPage.css'
 import { useState } from 'react';
 
-function SignupPage() {
+function SignupPage({ onLogin }) {
 
   const [username, setUsername] = useState("");
   const [email, setEmail] =useState("");
   const [password, setPassword] = useState("");
+  const [errors, setErrors] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
 
-/*
- cnsole.log(username)
- console.log(email)
- console.log(password)
-*/
 
 function handleSubmit(e)
 {
   e.preventDefault();
-  console.log(username)
+  setIsLoading(true);
+  /*console.log(username)
   console.log(email)
-  console.log(password)
-  
+  console.log(password)*/
+
+  fetch("/signup", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      username,
+      email,
+      password,
+    }),
+  }).then((r) => {
+    setIsLoading(false);
+    if (r.ok) {
+      r.json().then((user) => {
+        onLogin(user);
+        setErrors([]);   // Reset errors when the form is submitted successfully
+      });
+    } else {
+      r.json().then((err) => setErrors(err.errors || []));
+    }
+  });
 }
+
+console.log(errors)
 
   return (
     <div>
@@ -54,8 +75,18 @@ function handleSubmit(e)
           <input type="submit" value="Sign Up" />
         </form>
       </div>
+      {isLoading && <p>Loading...</p>}
+      {errors.length > 0 && (
+        <div>
+          <p>Error:</p>
+          <ul>
+            {errors.map((error, index) => (
+              <li key={index}>{error}</li>
+            ))}
+          </ul>
+        </div>
+      )}
     </div>
   );
 }
-
 export default SignupPage
