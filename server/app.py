@@ -64,6 +64,25 @@ class Signup(Resource):
 api.add_resource(Signup, "/signup", endpoint="signup")
 
 
+class Login(Resource):
+    def self(post):
+        json = request.get_json()
+        username = json.get("username")
+        password = json.get("password")
+
+        user = User.query.filter_by(username=username).first()
+
+        if user and user.authenticate(password):
+            session["user_id"] = user.id
+            return user.to_dict(), 201
+        else:
+            return {}, 401
+        
+api.add_resource(Login, "/login", endpoint="login")
+
+
+
+
 if __name__ == '__main__':
     app.run(port=5555, debug=True)
 
