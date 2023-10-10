@@ -32,10 +32,13 @@ def index():
 class Signup(Resource):
     def post(self):
         json = request.get_json()
-        username = json.get("values.username")
-        email=json.get("values.email")
-        password = json.get("values.password")
+        username = json.get("username")
+        email=json.get("email")
+        password = json.get("password")
         
+#print(username,email,password)
+
+
         user = User(
             username=username,
             email=email,
@@ -57,6 +60,8 @@ class Signup(Resource):
         else:
             return {}, 422
 
+
+api.add_resource(Signup, "/signup", endpoint="signup")
 
 
 if __name__ == '__main__':
