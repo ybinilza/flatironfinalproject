@@ -1,17 +1,43 @@
 import React from 'react'
 import { useState } from 'react'
 
+import './Loginpage.css'
+
 function LoginPage() {
 
 
 
 const[userName,setUserName]=useState("")
 const[password,setPassword]=useState("")
+const [errors, setErrors] = useState([]);
     
 function handleLogin(e)
 {   e.preventDefault();
-    console.log(userName)
-    console.log(password)
+    //console.log(userName)
+    //console.log(password)
+    
+     fetch("/login",
+     {
+        method : 'POST',
+        headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ userName, password }),
+        }).then((r)=>
+        {
+            if(r.ok) 
+            {
+                console.log(r) //edit later
+            }
+            else{
+                r.json().then((err) => console.log(err));
+                //console.log(err.errors)
+            }
+        })
+
+
+
+
     }
     
 
