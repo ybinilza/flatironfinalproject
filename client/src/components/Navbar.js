@@ -5,7 +5,7 @@ function Navbar() {
     return (
         <nav className="navbar">
           <div className="logo-container">
-            <img  alt="Logo" className="logo" />
+            <img   src={require('../images/marketforeveyone.png')}  alt="Logo" className="logo" />
           </div>
           <div className="search-container">
             <input type="text" placeholder="Search" className="search-bar" />
