@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-
+import './ItemList.css'; 
 const ItemList = () => {
   const [items, setItems] = useState([]);
 
@@ -16,18 +16,22 @@ const ItemList = () => {
   }, []);
 
   return (
-    <div>
-      <h2>Item List</h2>
-      <ul>
+      <div className="item-list-horizontal">
         {items.map(item => (
-          <li key={item.id}>
-            <strong>Name:</strong> {item.name} <br />
-            <strong>Description:</strong> {item.description} <br />
-            <strong>Price:</strong> {item.price} <br />
-          </li>
+          <div key={item.id} className="item">
+            <div className="item-box">
+              <strong>Name:</strong> {item.name}
+            </div>
+            <div className="item-box">
+              <strong>Description:</strong> {item.description}
+            </div>
+            <div className="item-box">
+              <strong>Price:</strong> {item.price}
+            </div>
+          </div>
         ))}
-      </ul>
-    </div>
+      </div>
+    
   );
 };
 

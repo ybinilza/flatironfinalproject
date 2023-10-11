@@ -33,7 +33,7 @@ if __name__ == '__main__':
 
         def seed_items(max_item=10):
             for _ in range(max_item):
-                print("items")
+                #print("items")
                 name = fake.word()
                 description = fake.text()
                 price = random.randint(1,10000)

@@ -64,29 +64,44 @@ class Signup(Resource):
 api.add_resource(Signup, "/signup", endpoint="signup")
 
 
+
 class Login(Resource):
-    def self(post):
-        json = request.get_json()
-        username = json.get("username")
-        password = json.get("password")
 
-        user = User.query.filter_by(username=username).first()
+    def post(self):
 
-        if user and user.authenticate(password):
-            session["user_id"] = user.id
-            return user.to_dict(), 201
-        else:
-            return {}, 401
-        
+        username = request.get_json()['userName']
+        user = User.query.filter(User.username == username).first()
+        print("user = ", user)
+
+        password = request.get_json()['password']
+
+        if user.authenticate(password):
+            session['user_id'] = user.id
+            return user.to_dict(), 200
+
+        return {'error': 'Invalid username or password'}, 
+
 api.add_resource(Login, "/login", endpoint="login")
 
 
-class Items(Resource):
-    def get(self):
-        items = [item.to_dict() for item in Item.query.all()]
-        return make_response(jsonify(items), 200)
+@app.route('/items')
+def items():
 
-api.add_resource(Items, "/items", endpoint="items")
+    items = []
+    for item in Item.query.all():
+        item_dict = {
+            "name": item.name,
+            "description": item.description,
+            "price": item.price,
+        }
+        items.append(item_dict)
+
+    response = make_response(
+        jsonify(items),
+        200
+    )
+    return response
+
 
 if __name__ == '__main__':
     app.run(port=5555, debug=True)

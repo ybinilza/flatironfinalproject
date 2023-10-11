@@ -1,5 +1,6 @@
 import React from 'react'
 import './Navbar.css';
+import { Link } from 'react-router-dom';
 
 function Navbar() {
     return (
@@ -12,9 +13,11 @@ function Navbar() {
           </div>
           <div className="buttons-container">
             
-              <button >Logout</button>
+          <Link to="/login">
+          <button>LogIn</button>
+          </Link>
             
-              <button >Login</button>
+              <button >LogOut</button>
             
           </div>
         </nav>

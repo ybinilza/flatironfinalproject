@@ -30,6 +30,7 @@ function handleLogin(e)
                 console.log(r) //edit later
             }
             else{
+                 alert("Invalid Username or Password")
                 r.json().then((err) => console.log(err));
                 //console.log(err.errors)
             }
