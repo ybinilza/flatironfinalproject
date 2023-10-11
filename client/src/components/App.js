@@ -9,12 +9,37 @@ import Item from "./Item";
 import NewItemAdd from "./NewItemAdd"
 import EachPersonPage from "./EachPersonPage";
 
-
-
-
 function App() {
+/*
+  const [user, setUser] = useState(null);
+
+  useEffect(() => {
+    // auto-login
+    fetch("/check_session").then((r) => {
+      if (r.ok) {
+        r.json().then((user) => setUser(user));
+      }
+    });
+  }, []);
+
+*/
   return (
-<EachPersonPage></EachPersonPage>
+   <div>
+    <Router>
+      <div>
+        <Navbar />
+        <Switch>
+          <Route path="/login">
+            <LoginPage />
+          </Route>
+          <Route path="/">
+            <Item/>
+          </Route>
+        </Switch>
+      </div>
+    </Router>
+    
+  </div> 
   );
 }
 

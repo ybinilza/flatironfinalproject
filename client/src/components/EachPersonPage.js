@@ -13,6 +13,7 @@ function EachPersonPage() {
     try {
       const response = await axios.get('http://localhost:5555/items');
       setItems(response.data);
+      console.log(response.data)
     } catch (error) {
       console.error('Error fetching items:', error);
     }
@@ -50,10 +51,10 @@ function EachPersonPage() {
         <div key={item.id} className="item">
           <h2>{item.name}</h2>
           <img src={require('../images/marketforeveyone.png')} alt="safew" style={{ maxWidth: '100%' }} />
-          <p>{item.description}</p>
-          <p>{item.price}</p>
-          <button onClick={() => handleDeleteItem(item.id)}>Delete Item</button>
-          <button onClick={() => handleEditPrice(item.id)}>Edit Price</button>
+          <p><h3>Description : </h3>"{item.description}</p>
+          <p><h3>Price : </h3>${item.price}</p>
+          <button onClick={() => handleDeleteItem(item.item_id)}>Delete Item</button>
+          <button onClick={() => handleEditPrice(item.item_id)}>Edit Price</button>
         </div>
       ))}
     </div>

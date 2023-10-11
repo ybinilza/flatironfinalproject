@@ -21,7 +21,7 @@ function Item() {
       {items.map(item => (
         <div key={item.id} className="item">
           <h2>{item.name}</h2>
-          <img src={require('../images/marketforeveyone.png')} alt="safew" style={{ maxWidth: '100%' }} />
+          <img src={require('../images/rose.jpg')} alt="safew" style={{ maxWidth: '100%' }} />
           <p>{item.description}</p>
           <p>{item.price}</p>
         </div>

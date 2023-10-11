@@ -16,17 +16,32 @@ from flask_restful import Resource
 from sqlalchemy.exc import IntegrityError
 from config import app, db, api
 from models import User,Item
+from flask_cors import CORS
 
 # Local imports
 from config import app, db, api
 # Add your model imports
-
+CORS(app)
 
 # Views go here!
 
 @app.route('/')
 def index():
     return '<h1>Project Server</h1>'
+
+
+class CheckSession(Resource):
+    def get(self):
+        if session["user_id"]:
+            user = User.query.get(session["user_id"])
+
+            return make_response(
+                user.to_dict(),
+                200,
+            )
+        else:
+            return {}, 401
+api.add_resource(CheckSession, "/check_session", endpoint="check_session")
 
 
 class Signup(Resource):
@@ -93,6 +108,7 @@ def items():
             "name": item.name,
             "description": item.description,
             "price": item.price,
+            "item_id" :item.id
         }
         items.append(item_dict)
 
@@ -127,6 +143,43 @@ def add_item():
         print(f"Error adding item: {str(e)}")
         return jsonify({'error': 'Failed to add item'}), 500
 
+
+# Route to delete an item by ID
+@app.route('/items/<int:item_id>', methods=['DELETE'])
+def delete_item(item_id):
+    try:
+        item = Item.query.get(item_id)
+        if not item:
+            return jsonify({'error': 'Item not found'}), 404
+
+        db.session.delete(item)
+        db.session.commit()
+
+        return jsonify({'message': 'Item deleted successfully'}), 200
+    except Exception as e:
+        print(f"Error deleting item: {str(e)}")
+        return jsonify({'error': 'Failed to delete item'}), 500
+    
+
+# Route to edit the price of an item by ID
+@app.route('/items/<int:item_id>', methods=['PATCH'])
+def edit_price(item_id):
+    try:
+        item = Item.query.get(item_id)
+        if not item:
+            return jsonify({'error': 'Item not found'}), 404
+
+        new_price = request.json.get('price')
+        if new_price is not None and isinstance(new_price, (int, float)):
+            item.price = new_price
+            db.session.commit()
+            return jsonify({'message': 'Price edited successfully'}), 200
+        else:
+            return jsonify({'error': 'Invalid price value'}), 400
+
+    except Exception as e:
+        print(f"Error editing price: {str(e)}")
+        return jsonify({'error': 'Failed to edit price'}), 500
 
 
 
