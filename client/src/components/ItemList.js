@@ -4,10 +4,11 @@ const ItemList = () => {
   const [items, setItems] = useState([]);
 
   useEffect(() => {
-    fetch('http://localhost:5000/items')
+    fetch('http://localhost:5555/items')
       .then(response => response.json())
       .then(data => {
-        setItems(data.items);
+        console.log("Data received:", data);
+        setItems(data);
       })
       .catch(error => {
         console.error('Error fetching items:', error);
