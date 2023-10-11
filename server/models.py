@@ -16,6 +16,7 @@ class User(db.Model, SerializerMixin):
     username = db.Column(db.String, unique=True, nullable=False)
     email=db.Column(db.String,nullable=False)
     _password_hash = db.Column(db.String)
+    items = db.relationship('Item', backref='owner', lazy=True)
 
 
     def __repr__(self):
@@ -44,3 +45,14 @@ class User(db.Model, SerializerMixin):
             raise ValueError("email is required")
         return value
 
+
+class Item(db.Model, SerializerMixin):
+    __tablename__ = "items"
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(100), nullable=False)
+    description = db.Column(db.Text, nullable=False)
+    price=db.Column(db.Float, nullable=False)
+    user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
+
+
+    

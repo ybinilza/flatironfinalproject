@@ -15,7 +15,7 @@ from flask import request, session, jsonify, make_response
 from flask_restful import Resource
 from sqlalchemy.exc import IntegrityError
 from config import app, db, api
-from models import User
+from models import User,Item
 
 # Local imports
 from config import app, db, api
@@ -81,7 +81,12 @@ class Login(Resource):
 api.add_resource(Login, "/login", endpoint="login")
 
 
+class Items(Resource):
+    def get(self):
+        items = [item.to_dict() for item in Item.query.all()]
+        return make_response(jsonify(items), 200)
 
+api.add_resource(Items, "/items", endpoint="items")
 
 if __name__ == '__main__':
     app.run(port=5555, debug=True)
