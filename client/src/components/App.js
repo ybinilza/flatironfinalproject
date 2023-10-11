@@ -7,11 +7,14 @@ import Navbar from "./Navbar"
 import ItemList from "./ItemList";
 import Item from "./Item";
 import NewItemAdd from "./NewItemAdd"
+import EachPersonPage from "./EachPersonPage";
+
+
 
 
 function App() {
   return (
-  <Item></Item>
+<EachPersonPage></EachPersonPage>
   );
 }
 
