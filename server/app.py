@@ -103,6 +103,33 @@ def items():
     return response
 
 
+@app.route('/add_item', methods=['POST'])
+def add_item():
+    try:
+        data = request.json  # Assuming the request contains JSON data
+
+        # Extracting item details from the JSON data
+        name = data.get('itemName')
+        #image_url = data.get('imageUrl')
+        description = data.get('itemDescription')
+        price = data.get('itemPrice')
+        uid=1
+
+        # Save item details to the database
+        new_item = Item(name=name, description=description, price=price, user_id=uid)
+        db.session.add(new_item)
+        db.session.commit()
+
+
+    
+        return jsonify({'message': 'Item added successfully'}), 200
+    except Exception as e:
+        print(f"Error adding item: {str(e)}")
+        return jsonify({'error': 'Failed to add item'}), 500
+
+
+
+
 if __name__ == '__main__':
     app.run(port=5555, debug=True)
 

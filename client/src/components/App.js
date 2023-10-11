@@ -6,6 +6,7 @@ import LoginPage from "./LoginPage";
 import Navbar from "./Navbar"
 import ItemList from "./ItemList";
 import Item from "./Item";
+import NewItemAdd from "./NewItemAdd"
 
 
 function App() {
