@@ -19,7 +19,7 @@ from models import User,Item
 from flask_cors import CORS
 
 # Local imports
-from config import app, db, api
+from config import app, db, api,session
 # Add your model imports
 CORS(app)
 
@@ -40,6 +40,7 @@ class CheckSession(Resource):
                 200,
             )
         else:
+
             return {}, 401
 api.add_resource(CheckSession, "/check_session", endpoint="check_session")
 
@@ -86,15 +87,35 @@ class Login(Resource):
 
         username = request.get_json()['userName']
         user = User.query.filter(User.username == username).first()
+        print(user.email)
+
+
         print("user = ", user)
+        session['user_id'] = user.id
+        print("id = ", session)
 
         password = request.get_json()['password']
+        print(password)
 
         if user.authenticate(password):
-            session['user_id'] = user.id
+            print("Hello")
+            session['user'] = user.id
             return user.to_dict(), 200
 
+        return {'error': 'Invalid username or password'}, 401
+       
+        '''
+        if user.authenticate(password):
+            session['user_id'] = user.id
+            print("User authenticated successfully")
+            print(session['user_id'])
+            return user.to_dict(), 200,
+        else:
+            print("invalid")
+
         return {'error': 'Invalid username or password'}, 
+    '''
+        
 
 api.add_resource(Login, "/login", endpoint="login")
 
@@ -185,4 +206,5 @@ def edit_price(item_id):
 
 if __name__ == '__main__':
     app.run(port=5555, debug=True)
+
 

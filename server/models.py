@@ -5,6 +5,7 @@ from sqlalchemy.orm import validates
 from config import db, bcrypt
 from sqlalchemy import UniqueConstraint
 from sqlalchemy.exc import IntegrityError
+import hashlib
 
 class User(db.Model, SerializerMixin):
     __tablename__ = "users"
@@ -18,6 +19,32 @@ class User(db.Model, SerializerMixin):
         return f"User {self.username}, ID: {self.id}"
     
 
+
+
+    @property
+    def password_hash(self):
+        return self._password_hash
+
+    @password_hash.setter
+    def password_hash(self, password):
+        password_hash = hashlib.sha256(password.encode('utf-8')).hexdigest()
+        self._password_hash = password_hash
+
+    def authenticate(self, password):
+        return self._password_hash == hashlib.sha256(password.encode('utf-8')).hexdigest()
+
+
+
+
+
+
+
+
+
+
+
+
+    '''
     @hybrid_property
     def password_hash(self):
         return self._password_hash
@@ -31,12 +58,13 @@ class User(db.Model, SerializerMixin):
     def authenticate(self, password):
         return self.simple_hash(password) == self.password_hash
 
+
     # simple_hash requires no access to the class or instance
     
     @staticmethod
     def simple_hash(input):
         return sum(bytearray(input, encoding='utf-8'))
-
+    '''
     @validates("username")
     def validate_username(self, key, value):
         if not value.strip():
@@ -78,3 +106,4 @@ class Item(db.Model, SerializerMixin):
             'user_id': self.user_id
            
         }
+
