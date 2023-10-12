@@ -1,12 +1,16 @@
 import React, { useState } from 'react';
+import { useHistory } from 'react-router-dom';
+import { BrowserRouter as Router, Route } from 'react-router-dom';
 import './Loginpage.css';
 
-function LoginPage() {
+function LoginPage({setUserLogin}) {
   const [userName, setUserName] = useState('');
   const [password, setPassword] = useState('');
   const [errors, setErrors] = useState([]);
   const [login, setLogin] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
+
+  const history =useHistory()
 
   function handleLogin(e) {
     e.preventDefault();
@@ -20,8 +24,10 @@ function LoginPage() {
     })
       .then((r) => {
         if (r.ok) {
-          setLogin((prevLogin) => !prevLogin);
+          //setLogin((prevLogin) => !prevLogin);
+          setLogin(true)
           console.log(r);
+          history.push('/EachPersonPage')
           
         } else {
           r.json().then((err) => {

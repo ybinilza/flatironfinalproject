@@ -10,8 +10,13 @@ import NewItemAdd from "./NewItemAdd"
 import EachPersonPage from "./EachPersonPage";
 
 function App() {
+
+
+
+const [islogin,setUserLogin] =useState(false)
 /*
   const [user, setUser] = useState(null);
+
 
   useEffect(() => {
     // auto-login
@@ -30,11 +35,12 @@ function App() {
         <Navbar />
         <Switch>
           <Route path="/login">
-            <LoginPage />
+            <LoginPage islogin={islogin} setLogin={setUserLogin}/>
           </Route>
           <Route path="/">
             <Item/>
           </Route>
+          <Route path="/EachPersonPage" component={EachPersonPage} />
         </Switch>
       </div>
     </Router>
