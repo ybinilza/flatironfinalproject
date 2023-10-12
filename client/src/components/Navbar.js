@@ -12,12 +12,19 @@ function Navbar() {
             <input type="text" placeholder="Search" className="search-bar" />
           </div>
           <div className="buttons-container">
-            
+          
+        
+          <Link to = "/signup">
+            <button>Sign Up</button>
+          </Link>
+
           <Link to="/login">
           <button>LogIn</button>
           </Link>
             
-              <button >LogOut</button>
+          <Link to="/logout">
+            <button>Logout</button>
+          </Link>
             
           </div>
         </nav>

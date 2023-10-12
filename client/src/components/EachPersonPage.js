@@ -1,9 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import './EachPersonPage.css';
 import axios from 'axios';
+import { useHistory } from 'react-router-dom';
+import { BrowserRouter as Router, Route } from 'react-router-dom';
 
 function EachPersonPage() {
   const [items, setItems] = useState([]);
+  const history =useHistory()
 
   useEffect(() => {
     fetchItems();
@@ -46,11 +49,13 @@ function EachPersonPage() {
   };
 
   return (
+  <div className="item-container">
+    <button onClick={()=>history.push("/additem")}>Add Items</button>
     <div className="item-container">
       {items.map((item) => (
         <div key={item.id} className="item">
           <h2>{item.name}</h2>
-          <img src={require('../images/marketforeveyone.png')} alt="safew" style={{ maxWidth: '100%' }} />
+          <img src={require('../images/rose.jpg')} alt="safew" style={{ maxWidth: '100%' }} />
           <p><h3>Description : </h3>"{item.description}</p>
           <p><h3>Price : </h3>${item.price}</p>
           <button onClick={() => handleDeleteItem(item.item_id)}>Delete Item</button>
@@ -58,7 +63,9 @@ function EachPersonPage() {
         </div>
       ))}
     </div>
-  );
+  </div>
+);
+
 }
 
 export default EachPersonPage;

@@ -28,26 +28,34 @@ const [islogin,setUserLogin] =useState(false)
   }, []);
 
 */
-  return (
-   <div>
-    <Router>
-      <div>
-        <Navbar />
-        <Switch>
-          <Route path="/login">
-            <LoginPage islogin={islogin} setLogin={setUserLogin}/>
-          </Route>
-          <Route path="/">
-            <Item/>
-          </Route>
-          <Route path="/EachPersonPage" component={EachPersonPage} />
-        </Switch>
-      </div>
-    </Router>
-    
-  </div> 
-  );
+return (
+  <Router>
+    <div>
+      <Navbar />
+      <Switch>
+        <Route path="/login">
+          <LoginPage />
+        </Route>
+        
+        <Route path="/eachperson" exact>
+              <EachPersonPage /> 
+        </Route>
+
+        <Route path="/additem" exact>
+              <NewItemAdd /> 
+        </Route>
+
+
+        <Route path="/">
+          <Item />
+        </Route>
+      </Switch>
+    </div>
+  </Router>
+);
 }
 
-
 export default App;
+//<Route path="/">
+  //          <Item/>
+    //      </Route>
