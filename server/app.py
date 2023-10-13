@@ -1,3 +1,5 @@
+
+
 #!/usr/bin/env python3
 
 # Standard library imports
@@ -91,7 +93,7 @@ class Login(Resource):
 
 
         print("user = ", user)
-        session['user_id'] = user.id
+        #session['user_id'] = user.id
         print("id = ", session)
 
         password = request.get_json()['password']

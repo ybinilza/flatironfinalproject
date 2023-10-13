@@ -1,3 +1,4 @@
+
 from sqlalchemy_serializer import SerializerMixin
 from sqlalchemy.ext.associationproxy import association_proxy
 from sqlalchemy.ext.hybrid import hybrid_property
@@ -18,33 +19,7 @@ class User(db.Model, SerializerMixin):
     def __repr__(self):
         return f"User {self.username}, ID: {self.id}"
     
-
-
-
-    @property
-    def password_hash(self):
-        return self._password_hash
-
-    @password_hash.setter
-    def password_hash(self, password):
-        password_hash = hashlib.sha256(password.encode('utf-8')).hexdigest()
-        self._password_hash = password_hash
-
-    def authenticate(self, password):
-        return self._password_hash == hashlib.sha256(password.encode('utf-8')).hexdigest()
-
-
-
-
-
-
-
-
-
-
-
-
-    '''
+    
     @hybrid_property
     def password_hash(self):
         return self._password_hash
@@ -63,8 +38,9 @@ class User(db.Model, SerializerMixin):
     
     @staticmethod
     def simple_hash(input):
-        return sum(bytearray(input, encoding='utf-8'))
-    '''
+        return hashlib.sha256(input.encode('utf-8')).hexdigest()
+
+    
     @validates("username")
     def validate_username(self, key, value):
         if not value.strip():
@@ -106,4 +82,5 @@ class Item(db.Model, SerializerMixin):
             'user_id': self.user_id
            
         }
+
 
