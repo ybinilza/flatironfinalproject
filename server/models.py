@@ -82,3 +82,52 @@ class Item(db.Model, SerializerMixin):
             'user_id': self.user_id
            
         }
+
+'''
+
+class Category(db.Model, SerializerMixin):
+    __tablename__ = "categories"
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(50), unique=True, nullable=False)
+    description = db.Column(db.Text, nullable=True)
+
+    items = db.relationship('Item', backref='category', lazy=True)
+
+    def __repr__(self):
+        return f"Category {self.name}, ID: {self.id}"
+
+    def serialize(self):
+        return {
+            'id': self.id,
+            'name': self.name,
+            'description': self.description,
+            'items': [item.serialize() for item in self.items]
+        }
+
+
+
+class Review(db.Model, SerializerMixin):
+    __tablename__ = "reviews"
+    id = db.Column(db.Integer, primary_key=True)
+    rating = db.Column(db.Integer, nullable=False)
+    comment = db.Column(db.Text, nullable=True)
+    reviewer_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
+    reviewed_user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
+
+    reviewer = db.relationship('User', foreign_keys=[reviewer_id], backref='given_reviews')
+    reviewed_user = db.relationship('User', foreign_keys=[reviewed_user_id], backref='received_reviews')
+
+    def __repr__(self):
+        return f"Review ID: {self.id}, Rating: {self.rating}"
+
+    def serialize(self):
+        return {
+            'id': self.id,
+            'rating': self.rating,
+            'comment': self.comment,
+            'reviewer_id': self.reviewer_id,
+            'reviewed_user_id': self.reviewed_user_id,
+            'reviewer': self.reviewer.serialize(),
+            'reviewed_user': self.reviewed_user.serialize()
+        }
+'''
