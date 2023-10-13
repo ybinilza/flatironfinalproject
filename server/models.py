@@ -82,5 +82,3 @@ class Item(db.Model, SerializerMixin):
             'user_id': self.user_id
            
         }
-
-

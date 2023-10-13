@@ -8,7 +8,6 @@
 from flask import request
 from flask_restful import Resource
 from flask import Flask
-from flask_cors import CORS
 from flask_migrate import Migrate
 from flask_restful import Api
 from flask_sqlalchemy import SQLAlchemy
@@ -34,16 +33,12 @@ def index():
 
 class CheckSession(Resource):
     def get(self):
-        if session["user_id"]:
+        if "user_id" in session and session["user_id"]:
             user = User.query.get(session["user_id"])
-
-            return make_response(
-                user.to_dict(),
-                200,
-            )
+            return make_response(user.to_dict(), 200)
         else:
-
             return {}, 401
+
 api.add_resource(CheckSession, "/check_session", endpoint="check_session")
 
 
@@ -60,7 +55,7 @@ class Signup(Resource):
         user = User(
             username=username,
             email=email,
-            password_hash=password,
+            _password_hash=User.simple_hash(password),
         )
 
         if user.validate_username(username, user.username) and user.validate_email(username, user.email) :
@@ -76,7 +71,7 @@ class Signup(Resource):
 
             return response
         else:
-            return {}, 422
+            return {"error": "Validation failed"}, 422
 
 
 api.add_resource(Signup, "/signup", endpoint="signup")
@@ -105,18 +100,7 @@ class Login(Resource):
             return user.to_dict(), 200
 
         return {'error': 'Invalid username or password'}, 401
-       
-        '''
-        if user.authenticate(password):
-            session['user_id'] = user.id
-            print("User authenticated successfully")
-            print(session['user_id'])
-            return user.to_dict(), 200,
-        else:
-            print("invalid")
 
-        return {'error': 'Invalid username or password'}, 
-    '''
         
 
 api.add_resource(Login, "/login", endpoint="login")
@@ -145,16 +129,16 @@ def items():
 @app.route('/add_item', methods=['POST'])
 def add_item():
     try:
-        data = request.json  # Assuming the request contains JSON data
+        data = request.json  
 
-        # Extracting item details from the JSON data
+       
         name = data.get('itemName')
         #image_url = data.get('imageUrl')
         description = data.get('itemDescription')
         price = data.get('itemPrice')
         uid=1
 
-        # Save item details to the database
+        
         new_item = Item(name=name, description=description, price=price, user_id=uid)
         db.session.add(new_item)
         db.session.commit()
@@ -208,5 +192,6 @@ def edit_price(item_id):
 
 if __name__ == '__main__':
     app.run(port=5555, debug=True)
+
 
 
